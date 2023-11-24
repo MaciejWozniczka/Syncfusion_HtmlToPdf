@@ -14,12 +14,12 @@ public class ExportPdf : ControllerBase
     }
 
     [HttpPost("/api/export/pdf")]
-    public async Task<ExportPdfContent> ExportPdfAsync(ExportPdfCommand command)
+    public async Task<Result<ExportPdfContent>> ExportPdfAsync(ExportPdfCommand command)
     {
         return await _mediator.Send(command);
     }
 
-    public class ExportPdfCommand : IRequest<ExportPdfContent>
+    public class ExportPdfCommand : IRequest<Result<ExportPdfContent>>
     {
         public string HtmlString { get; set; }
         public string FilePath { get; set; }
@@ -30,9 +30,9 @@ public class ExportPdf : ControllerBase
         public string Content { get; set; }
     }
 
-    public class ExportPdfQueryHandler : IRequestHandler<ExportPdfCommand, ExportPdfContent>
+    public class ExportPdfQueryHandler : IRequestHandler<ExportPdfCommand, Result<ExportPdfContent>>
     {
-        public async Task<ExportPdfContent> Handle(ExportPdfCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ExportPdfContent>> Handle(ExportPdfCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -51,11 +51,11 @@ public class ExportPdf : ControllerBase
                 var result = new ExportPdfContent { Content = Convert.ToBase64String(memoryStream.ToArray()) };
 
                 document.Close(true);
-                return result;
+                return Result.Ok(result);
             }
             catch (Exception ex)
             {
-                return new ExportPdfContent();
+                return Result.BadRequest<ExportPdfContent>(ex.Message);
             }
         }
     }
