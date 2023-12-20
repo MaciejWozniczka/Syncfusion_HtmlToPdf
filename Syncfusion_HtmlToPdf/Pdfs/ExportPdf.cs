@@ -39,6 +39,7 @@ public class ExportPdf : ControllerBase
                 var htmlConverter = new HtmlToPdfConverter();
 
                 var settings = new BlinkConverterSettings();
+                settings.BlinkPath = @"/usr/lib/chromium/chromium";
                 settings.CommandLineArguments.Add("--no-sandbox");
                 settings.CommandLineArguments.Add("--disable-setuid-sandbox");
                 htmlConverter.ConverterSettings = settings;
