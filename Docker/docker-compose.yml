@@ -6,6 +6,6 @@ services:
       dockerfile: ./Docker/Dockerfile
     restart: always
     environment:
-      - ASPNETCORE_URLS=http://+:5173
+      - ASPNETCORE_URLS=http://+:5174
     ports:
-      - 5173:5173
+      - 5174:5174
